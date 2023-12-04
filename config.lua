@@ -1,0 +1,5 @@
+return {
+    shared = {
+        identifierUsed = "steam"
+    }
+}
