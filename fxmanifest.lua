@@ -17,3 +17,7 @@ server_scripts {
     "@oxmysql/lib/MySQL.lua",
     "server/sv_*.lua",
 }
+
+files {
+    'data/pekerjaan.lua'
+}
