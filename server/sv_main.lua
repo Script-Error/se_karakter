@@ -17,7 +17,7 @@ SE.semuaPemain = {} ---@type table<string, table>
 ---@param steam string
 ---@return boolean|dataPemain
 function fungsi.cekdataPemain(steam)
-    local player = MySQL.prepare.await('SELECT * FROM karakter where identifier = ?', { steam })
+    local player = MySQL.query.await('SELECT * FROM karakter where identifier = ?', { steam })
     return player and {
         identifier = player.identifier,
         nama_steam = player.nama_steam,
@@ -35,8 +35,8 @@ end
 function fungsi.login(source, dataPemain)
     local KarakterData = dataPemain or {}
 
-    local identifier = KarakterData.identifier or GetPlayerIdentifierByType(source, SEConfig.identifier)
-    if not identifier then return DropPlayer(source, "Identifier Missing !") end
+    local identifier = KarakterData.identifier or IDENTIFIER[source][SEConfig.identifier]
+    -- if not identifier then return DropPlayer(source, "Identifier Missing !") end
 
     KarakterData.source = source
     KarakterData.identifier = identifier
@@ -134,7 +134,7 @@ RegisterNetEvent('se_karakter:server:BuatKarakter', function (dataBaru)
 end)
 
 lib.callback.register('se_karakter:sv_callback:getChar', function(source)
-    local steam = GetPlayerIdentifierByType(source, SEConfig.identifier)
+    local steam = exports.se_karakter:getIdentifier(source)[SEConfig.identifier]
     local DataPemain = fungsi.cekdataPemain(steam)
     local karakter
 
