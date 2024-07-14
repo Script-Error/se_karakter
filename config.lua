@@ -1,8 +1,3 @@
-return {
-    shared = {
-        identifierUsed = "steam"
-    },
-    client = {
-        defaultSpawn = vec(-1038.2709, -2738.5833, 13.8167, 328.2546)
-    }
-}
+SEConfig = {}
+SEConfig.identifier = 'steam' --- steam, license, license2, discord
+SEConfig.defaultSpawn = vector4(-1037.8545, -2737.4792, 20.1693, 326.1355)
