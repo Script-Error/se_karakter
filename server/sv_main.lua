@@ -41,13 +41,23 @@ function fungsi.login(source, dataPemain)
     KarakterData.source = source
     KarakterData.identifier = identifier
     KarakterData.nama_steam = GetPlayerName(KarakterData.source)
-    KarakterData.nama_karakter = ("%s %s"):format(KarakterData.informasi.nama_depan, KarakterData.informasi.nama_belakang)
-    
     KarakterData.informasi = KarakterData.informasi or {}
+    KarakterData.nama_karakter = ("%s %s"):format(KarakterData.informasi.nama_depan, KarakterData.informasi.nama_belakang)
     KarakterData.metadata = KarakterData.metadata or {}
+
     KarakterData.duit = KarakterData.duit or {
         cash = 0,
         bank = 0,
+    }
+
+    KarakterData.pekerjaan = KarakterData.pekerjaan or {
+        nama = 'pengangguran',
+        label = 'Pengangguran',
+        grade = {
+            level = 0,
+            label = 'Wes Mbuh',
+            gajih = 0
+        }
     }
 
     KarakterData.metadata.laper = KarakterData.metadata.laper or 100
@@ -64,12 +74,15 @@ function fungsi.buatData(Data)
     self.fungsi = {}
     self.dataPemain = Data
 
+    ---@param event string
     function self.triggerEvent(event, ...)
         return TriggerClientEvent(event, self.dataPemain.source, ...)
     end
 
-    function self.addMoney()
-        
+    ---@param tipe string
+    ---@param jumlah number
+    function self.addMoney(tipe, jumlah)
+        print(tipe, jumlah)
     end
 
     function self.simpenData()
@@ -97,11 +110,11 @@ function fungsi.simpanData(source)
         identifier = dataPemain.identifier,
         nama_steam = dataPemain.nama_steam,
         nama_karakter = dataPemain.nama_karakter,
-        informasi = dataPemain.informasi,
-        metadata = dataPemain.metadata,
-        duit = dataPemain.duit,
-        pekerjaan = dataPemain.pekerjaan,
-        lokasi_terakhir = dataPemain.lokasi_terakhir
+        informasi = json.encode(dataPemain.informasi),
+        metadata = json.encode(dataPemain.metadata),
+        duit = json.encode(dataPemain.duit),
+        pekerjaan = json.encode(dataPemain.pekerjaan),
+        lokasi_terakhir = json.encode(pcoords)
     })
     lib.print.verbose('Data pemain telah disimpan!')
 end
@@ -123,10 +136,11 @@ end)
 lib.callback.register('se_karakter:sv_callback:getChar', function(source)
     local steam = GetPlayerIdentifierByType(source, SEConfig.identifier)
     local DataPemain = fungsi.cekdataPemain(steam)
-    
+    local karakter
+
     if DataPemain then
-        fungsi.login(source, DataPemain --[[@as dataPemain]])
+        karakter = fungsi.login(source, DataPemain --[[@as dataPemain]])
     end
 
-    return DataPemain
+    return karakter
 end)
