@@ -5,6 +5,12 @@ local function Login ()
         Wait(0)
     end
 
+    local freemode = joaat('mp_m_freemode_01')
+    lib.requestModel(freemode, 1500)
+    SetPlayerModel(cache.playerId, freemode)
+    SetPedDefaultComponentVariation(cache.ped)
+    SetModelAsNoLongerNeeded(freemode)
+
     FreezeEntityPosition(cache.ped, true)
     Wait(2500)
     ShutdownLoadingScreen()
